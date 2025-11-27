@@ -1,78 +1,45 @@
 import { test, expect } from '@playwright/test';
+import { saucedemoPage } from '../pages/saucedemopage';
 
 test.beforeEach(async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
-    await page.locator('[data-test="username"]').click();
-    await page.locator('[data-test="username"]').fill('standard_user');
-    await page.locator('[data-test="password"]').click();
-    await page.locator('[data-test="password"]').fill('secret_sauce');
-    await page.locator('[data-test="login-button"]').click();
 
+    const sauceDemo = new saucedemoPage(page);
+    console.log('Login...');
+    await sauceDemo.gotothiswebsite();
+    await sauceDemo.login('standard_user', 'secret_sauce');
 
 });
 
 test('add and remove items from inventory', async ({ page }) => {
     console.log('Add/Remove Inventory list...');
-    // Add items
-    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-    await page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]').click();
-    await page.locator('[data-test="add-to-cart-sauce-labs-bolt-t-shirt"]').click();
-    await page.locator('[data-test="add-to-cart-sauce-labs-fleece-jacket"]').click();
-
-    // Remove items
-    await page.locator('[data-test="remove-sauce-labs-backpack"]').click();
-    await page.locator('[data-test="remove-sauce-labs-bike-light"]').click();
-    await page.locator('[data-test="remove-sauce-labs-bolt-t-shirt"]').click();
-    await page.locator('[data-test="remove-sauce-labs-fleece-jacket"]').click();
-
+    const sauceDemo = new saucedemoPage(page);
+    console.log('Add/Remove Inventory list...');
+    await sauceDemo.addInventory();
+    await sauceDemo.removeInventory();
 });
 
 test('add and remove items from the cart', async ({ page }) => {
     console.log('Add/Remove Cart list...');
-    // Add items
-    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-    await page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]').click();
-    await page.locator('[data-test="add-to-cart-sauce-labs-bolt-t-shirt"]').click();
-    await page.locator('[data-test="add-to-cart-sauce-labs-fleece-jacket"]').click();
-    await page.locator('[data-test="shopping-cart-link"]').click();
-
-    // Remove items
-    await page.locator('[data-test="remove-sauce-labs-backpack"]').click();
-    await page.locator('[data-test="remove-sauce-labs-bolt-t-shirt"]').click();
-    await page.locator('[data-test="remove-sauce-labs-bike-light"]').click();
-    await page.locator('[data-test="remove-sauce-labs-fleece-jacket"]').click();
-    await page.locator('[data-test="continue-shopping"]').click();
+    const sauceDemo = new saucedemoPage(page);
+    console.log('Add/Remove Cart list...');
+    await sauceDemo.addCart();
+    await sauceDemo.removeCart();   
 });
 
 test('add and checkout from cart', async ({ page }) => {
-  console.log('Add and checkout...');
-  // Add items
-  await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-  await page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]').click();
-  // Go to cart and checkout
-  await page.locator('[data-test="shopping-cart-link"]').click();
-  await page.locator('[data-test="checkout"]').click();
-  // Fill checkout info
-  await page.locator('[data-test="firstName"]').fill('Mark Lowell');
-  await page.locator('[data-test="lastName"]').fill('Paterno');
-  await page.locator('[data-test="postalCode"]').fill('9200');
-  await page.locator('[data-test="continue"]').click();
-  // Wait for finish button before clicking
-  const finishButton = page.locator('[data-test="finish"]');
-  await expect(finishButton).toBeVisible({ timeout: 10000 });
-  await finishButton.click();
-  // Wait for back-to-products button before clicking
-  const backButton = page.locator('[data-test="back-to-products"]');
-  await expect(backButton).toBeVisible({ timeout: 10000 });
-  await backButton.click();
-  console.log('Checkout completed!');
-
+    console.log('Add and checkout...');
+    const sauceDemo = new saucedemoPage(page);
+    console.log('Add and checkout...');
+    await sauceDemo.addAndCheckout('Mark Lowell', 'Paterno', '9200');
+ 
 });
 
 test('Logoout', async ({ page }) => {
-   console.log('Logout..');
-  await page.getByRole('button', { name: 'Open Menu' }).click();
-  await page.locator('[data-test="logout-sidebar-link"]').click();
+    console.log('Logout..');
+    const sauceDemo = new saucedemoPage(page);
+    console.log('Logout...');
+    await sauceDemo.logout();
+    
 });
 
 
